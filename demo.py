@@ -4,8 +4,8 @@ import asyncio
 from aiohttp import ClientSession
 
 r = 100000
-# url = "http://localhost:8080/{}"
-url = "http://localhost:3009/{}"
+url = "http://localhost:8080/{}"
+# url = "http://localhost:3009/{}"
 
 
 def demo():
