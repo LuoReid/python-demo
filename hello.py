@@ -15,7 +15,7 @@ def process_input(stream):
 def print_hello():
     while True:
         print("{} - Hello world:)".format(int(time())))
-        sleep(3)
+        # sleep(3)
 
 
 def read_and_process_input():
@@ -39,7 +39,7 @@ def main1():
         for [event, mask,t] in selector.select(0.1):
             print(event,mask,t)
             process_input(event.fileobj)
-        if time() - last_hello > 3:
+        if time() - last_hello > 3000000:
             last_hello = time()
             print_hello()
 
