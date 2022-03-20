@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+' a test module by reid'
+
 from threading import Thread
 import selectors
 import sys
@@ -43,6 +48,9 @@ def main1():
             last_hello = time()
             print_hello()
 
+def main2():
+    args = sys.argv
+    print('args:',args)
 
 if __name__ == '__main__':
-    main1()
+    main2()
