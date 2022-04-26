@@ -7,12 +7,14 @@ import asyncio
 import os
 import json
 import time
+from user import User
 __author__ = 'Long Cheng'
 
 logging.basicConfig(level=logging.INFO)
 
 
 def index(request):
+    
     return web.Response(body='<h1>Awesome</h1>', headers={'content-type': 'text/html'})
 
 
