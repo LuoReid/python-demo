@@ -7,14 +7,15 @@ import asyncio
 import os
 import json
 import time
-from user import User
+import orm
+from models import User, Blog, Comment
 __author__ = 'Long Cheng'
 
 logging.basicConfig(level=logging.INFO)
 
 
 def index(request):
-    
+
     return web.Response(body='<h1>Awesome</h1>', headers={'content-type': 'text/html'})
 
 
@@ -27,4 +28,7 @@ async def init(loop):
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(init(loop))
+
+
+
 loop.run_forever()
