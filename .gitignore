@@ -1,3 +1,4 @@
 env/
 __pycache__/
 web/env/
+web/www/__pycache__
