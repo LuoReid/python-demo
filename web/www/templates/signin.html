@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>登录 - Awesome Python Webapp</title>
+  <link rel="stylesheet" href="/static/css/awesome.css">
+  <script src="/static/js/sha1.min.js"></script>
+  <script src="/static/js/vue.global.js"></script>
+  <script src="/static/js/awesome.js"></script>
+
+</head>
+
+<body>
+  <div style="width: 320px">
+    <p><a href="/" class="uk-icon-button"><i class="uk-icon-html5"></i></a> <a href="/">Awesome Python Webapp</a></p>
+    <form id="vm" class="uk-panel uk-panel-box uk-form">
+      <div class="uk-alert uk-alert-danger uk-hidden"></div>
+      <div class="uk-form-row">
+        <div class="uk-form-icon uk-width-1-1">
+          <i class="uk-icon-envelope-o"></i>
+          <input v-model.trim="login.email" name="email" type="text" placeholder="电子邮件" maxlength="50"
+            class="uk-width-1-1 uk-form-large">
+        </div>
+      </div>
+      <div class="uk-form-row">
+        <div class="uk-form-icon uk-width-1-1">
+          <i class="uk-icon-lock"></i>
+          <input v-model.trim="login.passwd" name="passwd" type="password" placeholder="口令" maxlength="50"
+            class="uk-width-1-1 uk-form-large">
+        </div>
+      </div>
+      <div class="uk-form-row">
+        <button type="submit" @click="submit" class="uk-width-1-1 uk-button uk-button-primary uk-button-large"><i
+            class="uk-icon-sign-in"></i> 登录</button>
+      </div>
+    </form>
+  </div>
+  <script>
+    const ab = {
+      data() {
+        return {
+          login: {
+            email: '',
+            passwd: ''
+          }
+        }
+      },
+      methods: {
+        submit: function (event) {
+          event.preventDefault();
+          const log = { ...this.login }
+          if (log.passwd) {
+            log.passwd = CryptoJS.SHA1(log.email + ':' + log.passwd).toString()
+            fetch('/api/authenticate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json;charset=utf-8' },
+              body: JSON.stringify(log)
+            }).then(res => {
+              // location.assign('/')
+            })
+          }
+          return
+        }
+      }
+    }
+    Vue.createApp(ab).mount('#vm')
+  </script>
+</body>
+
+</html>
