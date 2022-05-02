@@ -1,9 +1,17 @@
-.uk-panel {
-  display: flex;
+/*
+ * custom css
+ */
+a:hover, a:active {
+    text-decoration: none;
 }
 
-.uk-form-row {
-  width: 400px;
-  margin: 5px;
-  height: 32px;
+#vm {
+    display: none;
+}
+#loading {
+    margin-bottom: 15px;
+}
+#error {
+    display: none;
+    margin-bottom: 15px;
 }

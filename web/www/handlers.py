@@ -5,7 +5,6 @@
 'url handlers'
 
 import re
-from tabnanny import check
 import time
 import json
 import logging
@@ -16,7 +15,7 @@ import markdown2
 from aiohttp import web
 from coroweb import get, post
 from models import User, Comment, Blog, next_id
-from apis import APIError, APIValueError, APIPermissionError
+from apis import APIError, APIValueError, APIPermissionError, Page
 from config import configs
 
 _RE_EMAIL = re.compile(
@@ -105,6 +104,11 @@ async def get_blog(id):
         c.html_content = text2html(c.content)
     blog.html_content = markdown2.markdown(blog.content)
     return {'__template__': 'blog.html', 'blog': blog, 'comments': comments}
+
+
+@get('/manage/blogs')
+async def manage_blogs(*, page='1'):
+    return {'__template__': 'manage_blogs.html', 'page_index': get_page_index(page)}
 
 
 @get('/manage/blogs/create')
@@ -199,6 +203,17 @@ async def api_register_user(*, email, name, passwd):
 async def api_get_blog(*, id):
     blog = await Blog.find(id)
     return blog
+
+
+@get('/api/blogs')
+async def api_blogs(*, page='1'):
+    page_index = get_page_index(page)
+    num = await Blog.findNumber('count(id)')
+    p = Page(num, page_index)
+    if num == 0:
+        return dict(page=p, blogs=())
+    blogs = await Blog.findAll(orderBy='created_at desc', limit=(p.offset, p.limit))
+    return dict(page=p, blogs=blogs)
 
 
 @post('/api/blogs')
