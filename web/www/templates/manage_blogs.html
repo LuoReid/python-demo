@@ -57,14 +57,27 @@
 
 <script>
   const ab = {
+    setup(props) {
+      console.log('props:', props)
+      let d = []
+      let p = {}
+      const getBlogs = async () => {
+        const data = await fetch('/api/blogs', { page }).then(res => res.json())
+        console.log('blogs:', data)
+        d = data.blogs
+        p = data.page
+      }
+      onMounted(getBlogs)
+      return { d, p, getBlogs }
+    },
     data() {
       return {
-        blogs: [],
-        page: { page_index: 0 }
+        blogs: this.b,
+        page: this.p
       }
     },
     methods: {
-      async getBlogs(page = 0) {
+      async getBlogs1(page = 0) {
         const data = await fetch('/api/blogs', { page }).then(res => res.json())
         console.log('blogs:', data)
         this.blogs = data.blogs
@@ -81,7 +94,7 @@
         }
       }
     },
-    beforeMount() {
+    mounted() {
       console.log('this:', this)
       this.getBlogs()
     }
