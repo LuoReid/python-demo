@@ -40,12 +40,10 @@ def init_jinja2(app, **kw):
     app['__templating__'] = env
 
 
-@asyncio.coroutine
-def logger_factory(app, handler):
-    @asyncio.coroutine
-    def logger(request):
+async def logger_factory(app, handler):
+    async def logger(request):
         logging.info('Request: %s %s' % (request.method, request.path))
-        return (yield from handler(request))
+        return await handler(request)
     return logger
 
 
@@ -59,6 +57,8 @@ async def auth_factory(app, handler):
             if user:
                 logging.info('set current user: %s' % user.email)
                 request.__user__ = user
+        if request.path.startswith('/manage/') and (request.__user__ is None or not request.request.__user__.admin):
+            return web.HTTPFound('/signin')
         return await handler(request)
     return auth
 
@@ -76,12 +76,10 @@ async def data_factory(app, handler):
     return parse_data
 
 
-@asyncio.coroutine
-def response_factory(app, handler):
-    @asyncio.coroutine
-    def response(request):
+async def response_factory(app, handler):
+    async def response(request):
         logging.info('Response handler...')
-        r = yield from handler(request)
+        r = await handler(request)
         if isinstance(r, web.StreamResponse):
             return r
         if isinstance(r, bytes):

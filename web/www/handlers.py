@@ -209,7 +209,7 @@ async def api_get_blog(*, id):
 async def api_blogs(*, page='1'):
     page_index = get_page_index(page)
     num = await Blog.findNumber('count(id)')
-    p = Page(num, page_index)
+    p = Page(num, page_index) 
     if num == 0:
         return dict(page=p, blogs=())
     blogs = await Blog.findAll(orderBy='created_at desc', limit=(p.offset, p.limit))
