@@ -10,6 +10,7 @@ import time
 from jinja2 import Environment, FileSystemLoader
 import orm
 from models import User, Blog, Comment
+from config import configs
 from coroweb import add_routes, add_static
 from handlers import cookie2user, COOKIE_NAME
 __author__ = 'Long Cheng'
@@ -130,7 +131,7 @@ def datetime_filter(t):
 
 
 async def init(loop):
-    await orm.create_pool(loop=loop, host='127.0.0.1', port=3306, user='www-data', password='www-data', db='awesome')
+    await orm.create_pool(loop=loop,  **configs.db)
     app = web.Application(loop=loop, middlewares=[
                           logger_factory, auth_factory, response_factory])
     init_jinja2(app, filters=dict(datetime=datetime_filter))
