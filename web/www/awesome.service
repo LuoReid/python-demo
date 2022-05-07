@@ -1,14 +1,11 @@
 [Unit]
 Description=awesome deamon
-After=awesome.service
-[Service]
-Environment="PATH=/srv/awesome/env/bin"
-Type=simple
-User=root
-Group=root
-WorkingDirectory=/srv/awesome
-ExecStart=/usr/bin/python /www/app.py
-Restart=always
+After=multi-user.target
+
+[Service] 
+Type=simple 
+ExecStart=/usr/bin/bash -c 'cd /srv/awesome/www && source evn/bin/acitvate && python app.py'
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target

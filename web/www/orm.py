@@ -3,7 +3,6 @@
 __author__ = 'Cheng'
 import logging
 import asyncio
-from tkinter.messagebox import NO
 import aiomysql
 
 
